@@ -19,16 +19,9 @@ public class AuthService {
     public SignResponse saveUser(UserSignUpRequest userInfo) {
 
 
-        List<User> allUsers =  repo.findAll();
 
-
-        for (User user : allUsers){
-            if (userInfo.email().equals(user.getEmail())){
-                SignResponse signUpResponse = new SignResponse(
-                        false,"email already registered!"
-                );
-                return  signUpResponse;
-            }
+        if (repo.findByEmail(userInfo.email()) != null) {
+            return new SignResponse(false, "Email already registered!");
         }
 
         User user = new User();

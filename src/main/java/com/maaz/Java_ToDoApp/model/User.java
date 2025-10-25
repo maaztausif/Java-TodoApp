@@ -19,6 +19,7 @@ public class User {
     private Integer id;
     private String fName;
     private String lName;
+    @Column(name = "email", unique = true)
     private String email;
     private String password;
     private LocalDateTime createdAt;
