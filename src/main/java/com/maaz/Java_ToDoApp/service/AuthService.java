@@ -4,6 +4,10 @@ import com.maaz.Java_ToDoApp.dto.auth.*;
 import com.maaz.Java_ToDoApp.model.User;
 import com.maaz.Java_ToDoApp.repo.Authrepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +19,16 @@ public class AuthService {
     Authrepo repo;
    @Autowired
    OtpService otpService;
+
+
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 
     public ValidEmailResponse validEmail(ValidEmailRequest validEmailRequest) {
         if(repo.findByEmail(validEmailRequest.email()) != null){
@@ -35,7 +49,9 @@ public class AuthService {
         user.setFName(userInfo.fName());
         user.setLName(userInfo.lName());
         user.setEmail(userInfo.email());
-        user.setPassword(userInfo.password());
+
+        user.setPassword(encoder.encode(userInfo.password()));
+
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -55,14 +71,17 @@ public class AuthService {
             return SignInResponse.failure(false,"Email not registered!");
         }else {
             if(user.getEmail().equals(userLoginRequest.email())){
-                if(user.getPassword().equals(userLoginRequest.password()) ){
-                    return SignInResponse.success(user,"Success");
+
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.email(),userLoginRequest.password()));
+                if(authentication.isAuthenticated()){
+                    String getToken = jwtService.generateToken(userLoginRequest.email());
+                    return SignInResponse.success(user,"Success",getToken);
+
                 }else{
-                    return SignInResponse.failure(false,"Wrong Password!");
+                    return SignInResponse.failure(false,"Wrong password!");
                 }
             }else{
                 return SignInResponse.failure(false,"Wrong Email!");
-
             }
         }
     }
@@ -81,7 +100,6 @@ public class AuthService {
                     return  new ResetPasswordResponse(true,"Password Updated");
                 }else{
                     return  new ResetPasswordResponse(false,"Invalid Otp");
-
                 }
             }
         }

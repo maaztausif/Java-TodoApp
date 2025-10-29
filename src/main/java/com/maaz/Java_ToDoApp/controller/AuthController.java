@@ -2,10 +2,15 @@ package com.maaz.Java_ToDoApp.controller;
 
 import com.maaz.Java_ToDoApp.dto.auth.*;
 import com.maaz.Java_ToDoApp.service.AuthService;
+import com.maaz.Java_ToDoApp.service.JwtService;
 import com.maaz.Java_ToDoApp.service.OtpService;
+import com.maaz.Java_ToDoApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +26,15 @@ public class AuthController {
     @Autowired
     private OtpService otpService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
 
     @PostMapping("Signup")
     public ResponseEntity<SignResponse> placeOrder(@RequestBody UserSignUpRequest userInfoRequest){
@@ -30,7 +44,11 @@ public class AuthController {
 
     @PostMapping("Signin")
     public ResponseEntity<SignInResponse> useSignIn(@RequestBody SignInRequest userLoginRequest){
+
+
+
         SignInResponse userSignInResponse = service.SignIn(userLoginRequest);
+//        userSignInResponse.token() =  getToken;
         return new ResponseEntity<>(userSignInResponse,HttpStatus.CREATED);
     }
 
