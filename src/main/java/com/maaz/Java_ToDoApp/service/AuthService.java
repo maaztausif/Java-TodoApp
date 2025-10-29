@@ -13,6 +13,8 @@ public class AuthService {
 
    @Autowired
     Authrepo repo;
+   @Autowired
+   OtpService otpService;
 
     public ValidEmailResponse validEmail(ValidEmailRequest validEmailRequest) {
         if(repo.findByEmail(validEmailRequest.email()) != null){
@@ -71,10 +73,16 @@ public class AuthService {
             if (!isValidPassword(resetPassReq.password())) {
                 return new ResetPasswordResponse(false, "Password must be at least 8 characters long, contain a number and a special character.");
             }else{
-                user.setPassword(resetPassReq.password());
-                user.setUpdatedAt(LocalDateTime.now());
-                repo.save(user);
-                return  new ResetPasswordResponse(true,"Password Updated");
+
+                if(otpService.validateOtp( new VerifyOtpRequest(resetPassReq.email(),resetPassReq.otp()))){
+                    user.setPassword(resetPassReq.password());
+                    user.setUpdatedAt(LocalDateTime.now());
+                    repo.save(user);
+                    return  new ResetPasswordResponse(true,"Password Updated");
+                }else{
+                    return  new ResetPasswordResponse(false,"Invalid Otp");
+
+                }
             }
         }
         return  new ResetPasswordResponse(true,"Something went wrong!");

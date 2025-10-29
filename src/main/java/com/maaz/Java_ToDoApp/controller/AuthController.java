@@ -2,6 +2,7 @@ package com.maaz.Java_ToDoApp.controller;
 
 import com.maaz.Java_ToDoApp.dto.auth.*;
 import com.maaz.Java_ToDoApp.service.AuthService;
+import com.maaz.Java_ToDoApp.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,10 @@ public class AuthController {
 
     @Autowired
     private AuthService service;
+
+    @Autowired
+    private OtpService otpService;
+
 
     @PostMapping("Signup")
     public ResponseEntity<SignResponse> placeOrder(@RequestBody UserSignUpRequest userInfoRequest){
@@ -47,5 +52,18 @@ public class AuthController {
         return new ResponseEntity<>(changePasswordResponse,HttpStatus.CREATED);
     }
 
+    @PostMapping("/send")
+    public ResponseEntity<SendOtpResponse> sendOtp(@RequestParam String email) {
+        SendOtpResponse otpResponse = otpService.sendOtp(email);
+        return new ResponseEntity<>(otpResponse,HttpStatus.CREATED);
+    }
+
+//    @PostMapping("/verify")
+//    public ResponseEntity<VerifyOtpResponse> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest) {
+//
+//        VerifyOtpResponse response =  otpService.validateOtp(verifyOtpRequest);
+//        return new ResponseEntity<>(response,HttpStatus.CREATED);
+//
+//    }
 
 }
