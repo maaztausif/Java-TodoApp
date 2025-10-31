@@ -1,5 +1,6 @@
 package com.maaz.Java_ToDoApp.config;
 
+import com.maaz.Java_ToDoApp.model.UserPrincipal;
 import com.maaz.Java_ToDoApp.service.JwtService;
 import com.maaz.Java_ToDoApp.service.MyUserService;
 import com.maaz.Java_ToDoApp.service.UserService;
@@ -46,11 +47,21 @@ public class JwtToken extends OncePerRequestFilter {
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = context.getBean(MyUserService.class).loadUserByUsername(userName);
 
-            if(service.valicateToken(token,userDetails)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            System.out.println(userDetails);
+
+
+            if (userDetails instanceof UserPrincipal userPrincipal) {
+                System.out.println("User Email: " + userPrincipal.getEmail());
+
+                if(service.valicateToken(token,userPrincipal)){
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+
+
+
         }
 
         filterChain.doFilter(request,response);

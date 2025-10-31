@@ -29,6 +29,10 @@ public class UserPrincipal implements UserDetails {
         return user.getFName() + " " + user.getLName();
     }
 
+    public String getEmail() {
+        return user.getEmail();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -49,3 +53,4 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 }
+

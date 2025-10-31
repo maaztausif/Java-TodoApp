@@ -34,7 +34,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/Signin").permitAll()
                         .requestMatchers("/api/resetPassword").permitAll()
                         .anyRequest().authenticated()
-
                 )
 //        .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

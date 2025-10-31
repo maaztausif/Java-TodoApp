@@ -1,5 +1,6 @@
 package com.maaz.Java_ToDoApp.service;
 
+import com.maaz.Java_ToDoApp.model.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +30,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() *1000*60*3))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -53,9 +54,16 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean valicateToken(String token, UserDetails userDetails) {
+    public boolean valicateToken(String token, UserPrincipal userDetails) {
         final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+        System.out.println(userName);
+        System.out.println(userDetails.getUsername());
+
+        System.out.println(userName.equals(userDetails.getUsername()));
+        System.out.println(userName.equals(userDetails.getUsername()));
+        System.out.println(userName.equals(!isTokenExpired(token)));
+        return (userName.equals(userDetails.getEmail()) && !isTokenExpired(token));
     }
 
     public boolean isTokenExpired(String token){
