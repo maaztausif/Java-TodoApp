@@ -45,20 +45,20 @@ public class JwtToken extends OncePerRequestFilter {
         }
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = context.getBean(MyUserService.class).loadUserByUsername(userName);
+            UserPrincipal userDetails = (UserPrincipal) context.getBean(MyUserService.class).loadUserByUsername(userName);
 
             System.out.println(userDetails);
 
 
-            if (userDetails instanceof UserPrincipal userPrincipal) {
-                System.out.println("User Email: " + userPrincipal.getEmail());
+//            if (userDetails instanceof UserPrincipal userPrincipal) {
+//                System.out.println("User Email: " + userPrincipal.getEmail());
 
-                if(service.valicateToken(token,userPrincipal)){
+                if(service.valicateToken(token,userDetails)){
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-            }
+//            }
 
 
 
