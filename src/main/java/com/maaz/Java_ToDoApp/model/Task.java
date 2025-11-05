@@ -1,0 +1,36 @@
+package com.maaz.Java_ToDoApp.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Data
+@Table(name = "task")
+public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int task_id;
+    private int user_id;
+    private String title;
+    private String description;
+    private Date dueDate;
+    private Priority priority;
+    private boolean isCompleted;
+    private Date createdAt;
+    private Date updatedAt;
+
+    @OneToMany(mappedBy = "task")
+    private List<Task_Categories> taskCategories;
+
+
+}
+
+
+
