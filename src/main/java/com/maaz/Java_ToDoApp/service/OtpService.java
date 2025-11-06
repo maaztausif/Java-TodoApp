@@ -2,7 +2,6 @@ package com.maaz.Java_ToDoApp.service;
 
 import com.maaz.Java_ToDoApp.dto.auth.SendOtpResponse;
 import com.maaz.Java_ToDoApp.dto.auth.VerifyOtpRequest;
-import com.maaz.Java_ToDoApp.dto.auth.VerifyOtpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -14,9 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Categories {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int category_id;
-    private int userId;
+//    private int userId;
     private String name;
 
     @OneToMany(mappedBy = "category")

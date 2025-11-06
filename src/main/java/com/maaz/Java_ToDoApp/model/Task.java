@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class Task {
     private int user_id;
     private String title;
     private String description;
-    private Date dueDate;
+    private LocalDateTime dueDate;
+
+    @Enumerated(EnumType.ORDINAL)
     private Priority priority;
     private boolean isCompleted;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "task")
     private List<Task_Categories> taskCategories;
