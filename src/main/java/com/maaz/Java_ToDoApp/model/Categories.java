@@ -19,6 +19,6 @@ public class Categories {
 //    private int userId;
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<Task_Categories> taskCategories;
 }

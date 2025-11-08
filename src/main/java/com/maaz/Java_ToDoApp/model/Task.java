@@ -1,5 +1,6 @@
 package com.maaz.Java_ToDoApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,8 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int task_id;
-    private int user_id;
+    @Column(name = "user_id")
+    private int userId;
     private String title;
     private String description;
     private LocalDateTime dueDate;
@@ -29,7 +31,8 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Task_Categories> taskCategories;
 
 
