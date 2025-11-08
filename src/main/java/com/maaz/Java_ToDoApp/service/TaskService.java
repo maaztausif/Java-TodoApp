@@ -38,7 +38,7 @@ public class TaskService {
 
         Task userTask = new Task();
 
-        userTask.setDescription(userTask.getDescription());
+        userTask.setDescription(request.description());
         userTask.setCompleted(request.isCompleted());
         userTask.setCreatedAt(LocalDateTime.now());
         userTask.setDueDate(request.dueDate());
