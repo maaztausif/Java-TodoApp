@@ -62,4 +62,10 @@ public class ItemsController {
         DeleteTaskResponse response = service.deleteTaskById(taskId);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
+
+    @PostMapping("taskComplete")
+    public ResponseEntity<TaskCompletedResponse> taskCompleted(@RequestBody TaskCompletedRequest request){
+        TaskCompletedResponse response = service.taskCompleted(request);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    }
 }

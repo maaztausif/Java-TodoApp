@@ -147,4 +147,14 @@ public class TaskService {
 
 
     }
+
+    public TaskCompletedResponse taskCompleted(TaskCompletedRequest request) {
+        Task selectedTask = repoTask.getById(request.taskId());
+        selectedTask.setCompleted(request.isCompleted());
+        selectedTask.setUpdatedAt(LocalDateTime.now());
+
+        repoTask.save(selectedTask);
+        return new TaskCompletedResponse(true,"Success");
+
+    }
 }
